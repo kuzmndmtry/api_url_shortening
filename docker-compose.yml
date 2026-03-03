@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+
+  db:
+    image: postgres:16
+    container_name: url_short_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: shortener
+    ports:
+      - "1221:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 10
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: url_short_redis
+    ports:
+      - "5370:6379"
+
+  app:
+    build: .
+    container_name: url_shortener_app
+    command: ["sh", "./start.sh"]
+    ports:
+      - "9999:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file:
+      - .env
+
+  celery_worker:
+    build: .
+    command: celery -A app.core.celery.celery worker --loglevel=info
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file:
+      - .env
+
+  celery_beat:
+    build: .
+    command: celery -A app.core.celery.celery beat --loglevel=info
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file:
+      - .env
+
+volumes:
+  db_data:
