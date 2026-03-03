@@ -154,7 +154,30 @@ Error: Bad Request 400
 ```
 
 # Инструкцию по запуску
+1. Настроить окржение .env
+``` 
+DATABASE_URL=
+REDIS_URL=
+``` 
+
+2. Сборка контейнера 
+``` 
+docker compose down 
+``` 
+3. Запуск контейнера
+``` 
+docker compose  up -d
+``` 
+* API http://localhost:9999
+* swagger  http://localhost:9999/docs
+
+4. Остановка
+``` 
+docker compose down 
+``` 
+
 # Описание БД.
+postgres
 ### USERS
 * id
 * username - логин
