@@ -1,13 +1,15 @@
 import os
 from celery import Celery
 
-redis_host = os.getenv("REDIS_HOST", "localhost")
-redis_port = os.getenv("REDIS_PORT", "5370")
+redis_url = os.getenv("REDIS_URL")
+
+if not redis_url:
+    raise RuntimeError("REDIS_URL is not set")
 
 celery = Celery(
     "shortener_worker",
-    broker=f"redis://{redis_host}:{redis_port}/0",
-    backend=f"redis://{redis_host}:{redis_port}/0",
+    broker=redis_url,
+    backend=redis_url,
 )
 
 celery.conf.update(
@@ -18,7 +20,7 @@ celery.conf.update(
 celery.autodiscover_tasks(["app.tasks"])
 
 celery.conf.beat_schedule = {
-    "delete-every-minute": {
+    "delete-every-day": {
         "task": "app.tasks.delete_rotten_links.delete_rotten_links",
         "schedule": 86400.0,
     }
