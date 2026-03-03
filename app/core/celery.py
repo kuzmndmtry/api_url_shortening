@@ -20,6 +20,6 @@ celery.autodiscover_tasks(["app.tasks"])
 celery.conf.beat_schedule = {
     "delete-every-minute": {
         "task": "app.tasks.delete_rotten_links.delete_rotten_links",
-        "schedule": 60.0,
+        "schedule": 86400.0,
     }
 }
