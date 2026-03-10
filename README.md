@@ -192,3 +192,38 @@ postgres
 * count_clicks - кол-во переходов
 * date_last_click - дата последнего перехода
 
+
+# ТЕСТЫ.
+Для запуска тестов из корневой папки:
+``` 
+pytest --cov=app --cov-report=term  
+```
+## Покрытие тестами
+
+**Общий показатель: 92%** 
+
+Отчет так же доступен в по htmlcov/index.html
+
+| Файл | Строк | Пропущено | Покрытие | 
+|------|-------|-----------|----------|
+| app/__init__.py | 0 | 0 | 100% |
+| app/api/routes/auth.py | 9 | 1 | 89% | 
+| app/api/routes/links.py | 80 | 10 | 88% | 
+| app/core/celery.py | 9 | 1 | 89% | 
+| app/core/config.py | 6 | 0 | 100% | 
+| app/core/redis.py | 4 | 0 | 100% | 
+| app/db/base.py | 2 | 0 | 100% | 
+| app/db/models/__init__.py | 3 | 0 | 100% | 
+| app/db/models/link.py | 15 | 0 | 100% | 
+| app/db/models/user.py | 9 | 0 | 100% | 
+| app/db/session.py | 10 | 4 | 60% | 
+| app/main.py | 7 | 0 | 100% | 
+| app/schemas/link.py | 14 | 0 | 100% | 
+| app/schemas/user.py | 9 | 0 | 100% | 
+| app/services/link_service.py | 43 | 3 | 93% | 
+| app/services/user_service.py | 12 | 0 | 100% | 
+| app/tasks/__init__.py | 1 | 0 | 100% |
+| app/tasks/delete_rotten_links.py | 18 | 0 | 100% |
+| **TOTAL** | **251** | **19** | **92%** | 
+
+
